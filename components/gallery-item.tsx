@@ -13,7 +13,7 @@ import { memo, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { GripVertical } from 'lucide-react'
+import { GripVertical, Play } from 'lucide-react'
 import { LazyImage } from './lazy-image'
 import { EditableText } from './editable-text'
 import type { GalleryPhoto } from '@/lib/gallery-types'
@@ -172,11 +172,11 @@ export const GalleryItem = memo(
                 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2
                 focus-visible:ring-offset-background rounded-sm
               `}
-              aria-label={`View "${photo.title}" in fullscreen`}
+              aria-label={`View "${photo.title}" ${photo.type === 'video' ? 'video' : 'in fullscreen'}`}
               type="button"
             >
               <LazyImage
-                src={photo.src}
+                src={photo.type === 'video' && photo.thumbnail ? photo.thumbnail : photo.src}
                 alt={photo.title}
                 containerClassName="absolute inset-0"
                 className=""
@@ -184,6 +184,18 @@ export const GalleryItem = memo(
                 grayscale={true}
                 hoverEffect={!isDragActive}
               />
+
+              {/* VIDEO PLAY OVERLAY */}
+              {photo.type === 'video' && (
+                <div 
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none z-[5]"
+                  aria-hidden="true"
+                >
+                  <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-background/70 backdrop-blur-sm flex items-center justify-center group-hover:bg-background/90 group-hover:scale-110 transition-all duration-300">
+                    <Play className="w-6 h-6 md:w-7 md:h-7 text-foreground ml-1" fill="currentColor" />
+                  </div>
+                </div>
+              )}
 
               <div 
                 className="absolute inset-0 border border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" 

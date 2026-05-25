@@ -260,28 +260,45 @@ export const Lightbox = memo(function Lightbox({
           </button>
 
           {/* 
-            IMAGE CONTAINER
-            WHY drag gesture: Enables mobile swipe navigation
+            MEDIA CONTAINER
+            WHY drag gesture: Enables mobile swipe navigation (disabled for videos)
           */}
           <motion.div
             key={currentIndex}
-            className="relative w-full h-full max-w-[95vw] md:max-w-[90vw] max-h-[80vh] md:max-h-[85vh] flex items-center justify-center p-4 cursor-grab active:cursor-grabbing"
+            className={`relative w-full h-full max-w-[95vw] md:max-w-[90vw] max-h-[80vh] md:max-h-[85vh] flex items-center justify-center p-4 ${currentPhoto.type !== 'video' ? 'cursor-grab active:cursor-grabbing' : ''}`}
             variants={imageVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            drag="x"
+            drag={currentPhoto.type !== 'video' ? 'x' : false}
             dragConstraints={{ left: 0, right: 0 }}
             dragElastic={0.2}
-            onDragEnd={handleDragEnd}
+            onDragEnd={currentPhoto.type !== 'video' ? handleDragEnd : undefined}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={currentPhoto.src}
-              alt={currentPhoto.title}
-              className="max-w-full max-h-full object-contain select-none pointer-events-none"
-              draggable={false}
-            />
+            {currentPhoto.type === 'video' ? (
+              /* VIDEO PLAYER */
+              <video
+                src={currentPhoto.src}
+                controls
+                autoPlay
+                playsInline
+                className="max-w-full max-h-full object-contain select-none rounded-sm"
+                style={{ outline: 'none' }}
+              >
+                Il tuo browser non supporta la riproduzione video.
+              </video>
+            ) : (
+              /* IMAGE */
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={currentPhoto.src}
+                  alt={currentPhoto.title}
+                  className="max-w-full max-h-full object-contain select-none pointer-events-none"
+                  draggable={false}
+                />
+              </>
+            )}
           </motion.div>
 
           {/* 
