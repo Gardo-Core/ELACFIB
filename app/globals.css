@@ -1,0 +1,436 @@
+/**
+ * ============================================================================
+ * GLOBAL STYLES - PHOTOGRAPHER PORTFOLIO
+ * ============================================================================
+ * 
+ * PURPOSE: Defines global CSS including:
+ * - Tailwind CSS v4 imports
+ * - CSS custom properties (design tokens)
+ * - Base element styles
+ * - Performance optimizations
+ * - Accessibility enhancements
+ * 
+ * ARCHITECTURE:
+ * 1. Tailwind imports
+ * 2. CSS custom properties (theme tokens)
+ * 3. Theme inline config for Tailwind
+ * 4. Base layer styles
+ * 5. Utility classes
+ * 6. Accessibility styles
+ * 
+ * WHY CSS Custom Properties:
+ * - Runtime themeable (can change with JS)
+ * - Cascading (can override in specific contexts)
+ * - Better performance than Sass variables
+ * - Native browser support
+ */
+
+/* 
+ * TAILWIND IMPORTS
+ * Order matters: base → components → utilities
+ */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* 
+ * DARK MODE VARIANT
+ * WHY custom variant: Enables .dark class-based dark mode
+ * instead of prefers-color-scheme media query
+ */
+@custom-variant dark (&:is(.dark *));
+
+/**
+ * ============================================================================
+ * DESIGN TOKENS (CSS Custom Properties)
+ * ============================================================================
+ * 
+ * Color system based on HSL for easy manipulation:
+ * - Hue: 0 (neutral/grayscale)
+ * - Saturation: 0% (pure grayscale)
+ * - Lightness: varies for contrast
+ * 
+ * WHY grayscale palette:
+ * - Photography portfolio: colors should come from photos
+ * - Timeless, elegant aesthetic
+ * - Maximum photo impact without color competition
+ */
+
+:root {
+  /* 
+   * BACKGROUND COLORS
+   * Near-black for dramatic, gallery-like feel
+   */
+  --background: hsl(0 0% 3%);
+  --foreground: hsl(0 0% 98%);
+
+  /* 
+   * CARD COLORS
+   * Same as background for seamless integration
+   */
+  --card: hsl(0 0% 3%);
+  --card-foreground: hsl(0 0% 98%);
+
+  /* 
+   * POPOVER COLORS
+   * For dropdowns, tooltips, etc.
+   */
+  --popover: hsl(0 0% 3%);
+  --popover-foreground: hsl(0 0% 98%);
+
+  /* 
+   * PRIMARY COLORS
+   * Near-white for maximum contrast on dark background
+   */
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 3%);
+
+  /* 
+   * SECONDARY COLORS
+   * Slightly lighter than background for subtle differentiation
+   */
+  --secondary: hsl(0 0% 12%);
+  --secondary-foreground: hsl(0 0% 98%);
+
+  /* 
+   * MUTED COLORS
+   * For less prominent text and UI elements
+   */
+  --muted: hsl(0 0% 12%);
+  --muted-foreground: hsl(0 0% 60%);
+
+  /* 
+   * ACCENT COLORS
+   * Same as secondary for this minimal theme
+   */
+  --accent: hsl(0 0% 12%);
+  --accent-foreground: hsl(0 0% 98%);
+
+  /* 
+   * DESTRUCTIVE COLORS
+   * For error states and destructive actions
+   */
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+
+  /* 
+   * BORDER & INPUT COLORS
+   * Subtle borders that don't distract from content
+   */
+  --border: hsl(0 0% 12%);
+  --input: hsl(0 0% 12%);
+  --ring: hsl(0 0% 80%);
+
+  /* 
+   * RADIUS
+   * Zero for sharp, modern aesthetic
+   */
+  --radius: 0rem;
+
+  /* 
+   * CHART COLORS
+   * For potential data visualizations
+   */
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+
+  /* 
+   * SIDEBAR COLORS
+   * For potential sidebar navigation
+   */
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* 
+ * DARK MODE OVERRIDES
+ * Same as root since we're dark-first
+ */
+.dark {
+  --background: hsl(0 0% 3%);
+  --foreground: hsl(0 0% 98%);
+  --card: hsl(0 0% 3%);
+  --card-foreground: hsl(0 0% 98%);
+  --popover: hsl(0 0% 3%);
+  --popover-foreground: hsl(0 0% 98%);
+  --primary: hsl(0 0% 98%);
+  --primary-foreground: hsl(0 0% 3%);
+  --secondary: hsl(0 0% 12%);
+  --secondary-foreground: hsl(0 0% 98%);
+  --muted: hsl(0 0% 12%);
+  --muted-foreground: hsl(0 0% 60%);
+  --accent: hsl(0 0% 12%);
+  --accent-foreground: hsl(0 0% 98%);
+  --destructive: hsl(0 62.8% 30.6%);
+  --destructive-foreground: hsl(0 0% 98%);
+  --border: hsl(0 0% 12%);
+  --input: hsl(0 0% 12%);
+  --ring: hsl(0 0% 80%);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(0.269 0 0);
+  --sidebar-ring: oklch(0.439 0 0);
+}
+
+/**
+ * ============================================================================
+ * TAILWIND THEME INLINE CONFIG
+ * ============================================================================
+ * 
+ * Maps CSS custom properties to Tailwind classes
+ * Enables: bg-background, text-foreground, border-border, etc.
+ */
+@theme inline {
+  /* Font families - set by next/font in layout.tsx */
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+
+  /* Color mappings */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Border radius scale */
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Sidebar colors */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/**
+ * ============================================================================
+ * BASE LAYER STYLES
+ * ============================================================================
+ * 
+ * Global element defaults
+ */
+@layer base {
+  /* 
+   * Universal box-sizing and outline
+   */
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  /* 
+   * Body defaults
+   */
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* 
+   * HTML SMOOTH SCROLL
+   * 
+   * WHY: Enables smooth scrolling for anchor links and scrollTo()
+   * Respects prefers-reduced-motion via media query below
+   */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* 
+   * REDUCED MOTION SUPPORT
+   * 
+   * WHY: Accessibility requirement for users with vestibular disorders
+   * Disables smooth scroll and other motion effects
+   */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* 
+   * CUSTOM SCROLLBAR
+   * 
+   * WHY: Subtle scrollbar that doesn't distract from content
+   * Matches the dark theme aesthetic
+   */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(0 0% 20%);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(0 0% 30%);
+  }
+
+  /* Firefox scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(0 0% 20%) transparent;
+  }
+
+  /* 
+   * FOCUS STYLES
+   * 
+   * WHY: Clear focus indicators for keyboard navigation
+   * Only visible for keyboard users (focus-visible)
+   */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+
+  /* 
+   * SELECTION STYLES
+   * 
+   * WHY: Consistent text selection appearance
+   * High contrast for readability
+   */
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  /* 
+   * IMAGE DEFAULTS
+   * 
+   * WHY: Prevent images from overflowing containers
+   * and ensure proper aspect ratio handling
+   */
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* 
+   * LINK DEFAULTS
+   * 
+   * WHY: Remove default blue color, use inherit for flexibility
+   */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+}
+
+/**
+ * ============================================================================
+ * UTILITY CLASSES
+ * ============================================================================
+ * 
+ * Custom utility classes for specific use cases
+ */
+@layer utilities {
+  /* 
+   * TEXT BALANCE
+   * 
+   * WHY: Improves typography by balancing line lengths
+   * Particularly useful for headings
+   */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* 
+   * TEXT PRETTY
+   * 
+   * WHY: Prevents orphans and improves readability
+   * Good for body text
+   */
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* 
+   * GPU ACCELERATION
+   * 
+   * WHY: Forces GPU compositing for smoother animations
+   * Use sparingly - can increase memory usage
+   */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    will-change: transform;
+  }
+
+  /* 
+   * HIDE SCROLLBAR
+   * 
+   * WHY: Useful for horizontal scroll containers
+   * where scrollbar is distracting
+   */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 
+   * DRAG NONE
+   * 
+   * WHY: Prevents native drag on images/elements
+   * Useful when implementing custom drag behavior
+   */
+  .drag-none {
+    -webkit-user-drag: none;
+    user-drag: none;
+  }
+}
